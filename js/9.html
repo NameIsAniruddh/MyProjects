@@ -1,0 +1,33 @@
+<script type="text/javascript">
+var x=prompt("Enter the number:"," ");
+try
+{ 
+if(x>100)
+  {
+  throw "Err1"; 
+  }
+else if(x<10)
+  {
+  throw "Err2"; 
+  }
+else if(isNaN(x))
+  {
+  throw "Err3"; 
+  }
+}
+catch(er)
+{
+if(er=="Err1")
+  {
+  alert("Error! The value is above to 100");
+  }
+if(er=="Err2")
+  {
+  alert("Error! The value is low to 10");
+  }
+if(er=="Err3")
+  {
+  alert("Error! The value is not a Numeric Number");
+  }
+}
+</script>

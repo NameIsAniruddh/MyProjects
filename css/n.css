@@ -1,0 +1,22 @@
+page
+{
+width:800px;
+height:auto;
+border-style:groove;
+}
+<div class="headerpart"></div>
+{
+width:800px;
+height:170px;
+border-style:groove;
+background-color:rgb(12,10,190);
+background-image:url('image/header'.jpg);
+background-repeat:no-repeat;
+}
+linkspart
+{
+width:800px;
+height:20px;
+margin-top:5px;
+background-color:rgb(12,100,198);
+}

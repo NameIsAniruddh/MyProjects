@@ -1,0 +1,18 @@
+<script type="text/javascript"> 
+  var currentTime = new Date()
+  var hours = currentTime.getHours()
+  var minutes = currentTime.getMinutes()
+ 
+  var am_pm = "AM";
+  if (hours >= 12) 
+  {
+  am_pm = "PM";
+  hours = hours - 12;
+  }
+  if (minutes < 10)
+  {
+   minutes = "0" + minutes;
+  }
+  document.write("Current Time: ");  
+  document.write("<strong>"+hours+":"+minutes+" "+am_pm+"</strong>");
+</script>

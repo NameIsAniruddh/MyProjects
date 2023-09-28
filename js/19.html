@@ -1,0 +1,17 @@
+<script type="text/javascript">
+function SetCookie()
+{
+   if( document.mycookies.visitor.value == "" ){
+      alert("Enter Your Name...");
+      return;
+   }
+   cookie_visitor_value = escape(document.mycookies.visitor.value) + ";";
+   document.cookie="name=" + cookie_visitor_value;
+   alert("Set Cookies : " + "Visitor Name=" + cookie_visitor_value );
+}
+</script>
+
+<form name="mycookies" action="">
+Enter Your Name: <input type="text" name="visitor"/>
+<input type="button" value="Set Cookie" onclick="SetCookie();"/>
+</form>

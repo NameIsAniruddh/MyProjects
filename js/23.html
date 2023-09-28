@@ -1,0 +1,38 @@
+<script type="text/javascript">
+function validate_email(field_condition,alert_message)
+{
+with (field_condition)
+  {
+  apos=value.indexOf("@");
+  dotpos=value.lastIndexOf(".");
+  if (apos<1||dotpos-apos<2)
+    {
+	  alert(alert_message);
+	  return false;
+    }
+    else 
+	{
+	  return true;
+	}
+   }
+ }
+
+function validate_form(form)
+{
+with (form)
+  {
+  if (validate_email(email,"This E-Mail Address is not a valid!")==false)
+    {
+	  email.focus();
+	  return false;
+	}
+  }
+}
+</script>
+
+<form action="e-mail_submit_message.php" method="post"
+onsubmit="return validate_form(this);">
+Enter Your Email:
+<input type="text" name="email" size="35">
+<input type="submit" value="Submit">
+</form>

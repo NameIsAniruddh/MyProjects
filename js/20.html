@@ -1,0 +1,20 @@
+<script type="text/javascript">
+function ReadCookies()
+{
+   var get_cookies = document.cookie;
+   alert("All Cookies : " + get_cookies );
+
+   // Get all the cookies pairs store in array
+   cookie_array  = get_cookies.split(';');
+
+   // Need for get cookies key with value
+   for(var i=0; i<1; i++){
+      name = cookie_array[i].split('=')[0];
+      value = cookie_array[i].split('=')[1];
+      alert("Cookies Key is : " + name + " and Key Value is : " + value);
+   }
+}
+</script>
+<form name="read_cookies" action="">
+<input type="button" value="Get Cookie" onclick="ReadCookies()"/>
+</form>

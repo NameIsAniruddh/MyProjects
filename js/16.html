@@ -1,0 +1,13 @@
+<script type="text/javascript"> 
+var currentTime = new Date()
+var hours = currentTime.getHours()
+var minutes = currentTime.getMinutes()
+var seconds = currentTime.getSeconds();
+
+if (minutes < 10)
+ { 
+   minutes = "0" + minutes;
+ }
+ document.write("Current Time: ");
+ document.write("<strong>"+hours+":"+minutes+":"+seconds+" "+"</strong>");
+</script>

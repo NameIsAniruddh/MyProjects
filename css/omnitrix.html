@@ -1,0 +1,43 @@
+<html>  
+<head>  
+<style>  
+h1{  
+text-align:center;  
+}  
+.loader {
+width: 0;
+	height: 0;
+	border-top: 15px solid transparent;
+	border-right: 30px solid green;
+	border-bottom: 15px solid transparent;
+  position:absolute;
+left:30%  ;
+  animation: spin 0s linear infinite;
+}
+.loader2 {
+width: 0;
+	height: 0;
+	border-top: 15px solid transparent;
+	border-left: 30px solid green;
+	border-bottom: 15px solid transparent;
+  position:absolute;  
+left:30% ;
+  animation: spin 0s linear infinite;
+}
+@keyframes spin {  
+  0% { transform: rotate(0deg); }  
+  100% { transform: rotate(360deg); }  
+}  
+</style>  
+</head>  
+<body>  
+  
+<h1>CSS Loader</h1>  
+<br><br><br><br>
+  
+<div class="loader"></div>  
+
+<div class="loader2"></div>  
+  
+</body>  
+</html>  

@@ -1,0 +1,30 @@
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style> 
+#myDIV {
+  width: 50px;
+  height: 150px;
+  background: red;
+  animation: mymove 1s infinite;
+}
+.circle {
+  height: 30px;
+  width: 50px;
+  background-color: #555;
+  border-radius: 50%;
+  animation: mymove 1s infinite;
+}
+@keyframes mymove {
+  from {background-color: red;}
+  to {background-color: blue;}
+}
+</style>
+</head>
+<body bgcolor=gold>
+<h1>Animation of background-color</h1>
+<p>Gradually change the background-color from red to blue:<p>
+<div id="myDIV"></div><br>
+<div class="circle"></div>
+</body>
+</html>
