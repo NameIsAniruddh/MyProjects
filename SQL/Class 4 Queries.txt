@@ -1,0 +1,162 @@
+Rownum & RowID:
+--------------
+create table employee_dtls(emp_no number,emp_name varchar2(200), emp_name2 varchar2(200), emp_dept varchar2(100));
+
+
+insert into employee_dtls values (101,'RAJAVEL','BALA','001');
+insert into employee_dtls values (102,'TAMIL','BALA','001');
+insert into employee_dtls values (103,'PAZHANI','BALA','001');
+insert into employee_dtls values (104,'RAVI','BALA','001');
+insert into employee_dtls values (105,'GUNA','BALA','001');
+insert into employee_dtls values (106,'GURU','BALA','001');
+insert into employee_dtls values (107,'GUNA','BALA','001');
+
+
+SELECT  ROWNUM, A.* FROM employee_dtls A WHERE  ROWNUM <=5
+
+RESULT
+------
+1	101	RAJAVEL	BALA	001
+2	102	TAMIL	BALA	001
+3	103	PAZHANI	BALA	001
+4	104	RAVI	BALA	001
+5	105	GUNA	BALA	001
+
+SELECT  A.* FROM employee_dtls A WHERE ROWNUM =5
+
+RESULT
+-----
+
+-----
+
+SELECT  A.* FROM employee_dtls A WHERE ROWNUM =1
+
+RESULT
+-----
+101	RAJAVEL	BALA	001
+
+
+
+SELECT ROWNUM, A.* FROM employee_dtls A WHERE EMP_NO IN (105,106) 
+
+RESULT
+-----
+1	105	GUNA	BALA	001
+2	106	GURU	BALA	001
+
+
+ROWID:
+------
+SELECT ROWID,A.* FROM employee_dtls A
+
+RESULT
+-----
+AAASgNAAEAAAAJsAAA	101	RAJAVEL	BALA	001
+AAASgNAAEAAAAJsAAB	102	TAMIL	BALA	001
+AAASgNAAEAAAAJsAAC	103	PAZHANI	BALA	001
+AAASgNAAEAAAAJsAAD	104	RAVI	BALA	001
+AAASgNAAEAAAAJsAAE	105	GUNA	BALA	001
+AAASgNAAEAAAAJsAAF	106	GURU	BALA	001
+AAASgNAAEAAAAJsAAG	107	GUNA	BALA	001
+
+
+SELECT ROWID,A.* FROM employee_dtls A WHERE EMP_NO IN (104,105) 
+
+RESULT:
+------
+AAASgNAAEAAAAJsAAD	104	RAVI	BALA	001
+AAASgNAAEAAAAJsAAE	105	GUNA	BALA	001
+
+
+
+
+Datatypes:
+---------
+
+Number Datatype:
+--------------
+Number -> Max length possible is 38.
+
+create table temp_test5(emp_no NUMBER(7), DEPT_NO NUMBER(7));
+
+insert into temp_test5 values(1234567,'1234567');  --> Even a '123' single given a character. the interally trying converting into number.
+
+Number with decimal point:
+-------------------------
+create table temp_test5(emp_no NUMBER(7), salary NUMBER(7,2)); 
+
+7,2   --> 5 DIGIT,  2 DECIMAL
+7-2 = DIGIT
+  2 = DECIMAL
+
+
+insert into temp_test5 values (1234567,123456.12);
+
+SELECT * FROM temp_test5
+
+RESULT:
+------
+1234567	12345.12
+
+
+INTEGER
+-------
+create table temp_test5(emp_no INTEGER, salary INTEGER); 
+
+INSERT INTO temp_test5 VALUES(101.23,145.67);
+
+
+SELECT * FROM temp_test5
+
+
+RESULT:
+------
+101	146
+
+
+FLOAT    -=->  0.30103 (Need to multiple the value with range to find the round of digit)
+-----
+create table temp_test5(emp_no FLOAT(2), salary FLOAT(5), ROLL_NO FLOAT(8)); \
+
+INSERT INTO temp_test5 VALUES(123456789.123456789,123456789.123456789,123456789.123456789);
+
+SELECT * FROM temp_test5
+
+RESULT:
+------
+100000000	120000000	123000000
+
+
+CHARACTER DATATYPE:
+------------------
+CHAR   --> Maximum range 2000
+CHAR   --> Its a fixed. its consume all the range mention in datatype.
+
+create table temp_test5(emp_name1 char(2000)); 
+
+insert into temp_test5 values ('RAJAVEL');
+insert into temp_test5 values (1234567);
+
+SELECT * FROM temp_test5
+
+RESULT:
+------
+RAJAVEL                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+1234567                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                         
+VARCHAR
+-------
+VARCHAR   --> Maximum range 4000
+VARCHAR   --> Variable character (it not consume all the range)
+VARCHAR   --> its consume space for NULL
+
+RAJAVEL
+1234567
+
+VARCHAR2:
+--------
+VARCHAR2   --> Maximum range 4000
+VARCHAR2   --> Variable character (it not consume all the range)
+VARCHAR2   --> its not consume space for NULL
+
+RAJAVEL
+1234567

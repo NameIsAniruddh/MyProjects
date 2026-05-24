@@ -1,0 +1,254 @@
+Date Datatype & Date Function Additionall Information:
+-----------------------------------------------------
+select SYSDATE from dual
+
+select to_char(SYSDATE , 'YYYY-MM-DD')  from dual 
+
+select to_char(SYSDATE , 'YY-MM-DD')  from dual 
+
+select to_char(SYSDATE , 'MM-YYYY')  from dual 
+
+
+select to_char(SYSDATE , 'Day')  from dual  
+
+select to_char(SYSDATE , 'Year')  from dual 
+
+select to_char(SYSDATE , 'Month')  from dual 
+
+
+Operators:
+----------
+
+
+Arithmetic Operators:
+--------------------
+
++
+---
+select 34+56 FROM DUAL
+
+90
+
+-
+-----
+
+select 56 - 6 FROM DUAL
+
+50
+
+*
+-----
+select 10 * 6 FROM DUAL
+
+60
+
+
+MOD
+-----
+select MOD(12,10) FROM DUAL
+
+2
+
+
+Character Operator:
+------------------
+
+||    --> Going to concat the given input
+---
+
+select 'RAJ '||'VEL'||' RAVI' FROM DUAL
+
+RAJ VEL RAVI
+
+select concat('RAJ ','VEL') FROM DUAL  --> Its possible to concat only two input.
+
+
+Comparsion Operator:
+-------------------
+create table emp_operator(num_1 NUMBER,
+                          num_2 NUMBER);
+
+
+INSERT INTO emp_operator VALUES (1,1);
+INSERT INTO emp_operator VALUES (1,2);
+INSERT INTO emp_operator VALUES (2,2);
+INSERT INTO emp_operator VALUES (3,4);
+INSERT INTO emp_operator VALUES (7,10);
+INSERT INTO emp_operator VALUES (9,9);
+INSERT INTO emp_operator VALUES (1,9);
+
+
+=
+----
+SELECT * FROM emp_operator WHERE num_1 = num_2;
+
+Result:
+------
+1	1
+2	2
+9	9
+
+
+!=  (or)  <>
+-------------
+
+SELECT * FROM emp_operator WHERE num_1 != num_2;
+SELECT * FROM emp_operator WHERE num_1 <> num_2;
+
+Result
+------
+1	2
+3	4
+7	10
+1	9
+
+
+
+<
+------
+SELECT * FROM emp_operator WHERE num_1 < num_2;
+
+RESULT
+------
+1	2
+3	4
+7	10
+1	9
+
+
+>
+------
+SELECT * FROM emp_operator WHERE num_1 > num_2;
+
+RESULT
+------
+10	8
+
+
+>=
+------
+SELECT * FROM emp_operator WHERE num_1 >= num_2;
+
+RESULT
+------
+1	1
+2	2
+9	9
+10	8
+
+<=
+------
+SELECT * FROM emp_operator WHERE num_1 <= num_2;
+
+RESULT
+------
+1	1
+1	2
+2	2
+3	4
+7	10
+9	9
+1	9
+
+
+ANY
+----
+SELECT * FROM emp_operator WHERE NUM_1 < ANY (0,-1,-2,-3,-4,2);
+
+RESULT
+------
+1	1
+1	2
+1	9
+
+SELECT * FROM emp_operator WHERE NUM_1 > ANY (0,-1,-2,-3,-4,2);
+
+RESULT
+------
+1	1
+1	2
+2	2
+3	4
+7	10
+9	9
+1	9
+10	8
+
+
+ALL
+----
+SELECT * FROM emp_operator WHERE NUM_1 = ALL (1,0,-1,-2,-3,-4,2);
+
+RESULT
+-----
+no rows.
+
+
+SELECT * FROM emp_operator WHERE NUM_1 < ALL (0,-1,-2,-3,-4,2);
+
+RESULT
+-----
+no rows.
+
+
+SELECT * FROM emp_operator WHERE NUM_1 > ALL (0,-1,-2,-3,-4,2);
+
+RESULT
+-----
+3	4
+7	10
+9	9
+10	8
+
+
+IN
+-----
+SELECT * FROM emp_operator where num_1 in (3,12,7,1,15,4,1);
+
+RESULT
+-----
+1	1
+1	2
+3	4
+7	10
+1	9
+
+NOT IN
+------
+SELECT * FROM emp_operator where num_1 not in (3,12,7,1,15,4,1);
+
+RESULT
+------
+2	2
+9	9
+10	8
+-3	8
+
+BETWEEN
+-------
+SELECT * FROM emp_operator where num_1 between 3 and 8;
+
+RESULT:
+------
+3	4
+7	10
+
+LIKE
+----
+
+drop table emp_operator;
+create table emp_operator(emp_name varchar2(1000));
+
+insert INTO emp_operator values('RAJAVEL');
+insert INTO emp_operator VALUES ('RAVI');
+insert INTO emp_operator VALUES ('RAJARAVI');
+insert INTO emp_operator VALUES ('JARAVI');
+insert INTO emp_operator VALUES ('RA');
+
+RESULT:
+------
+RAJAVEL
+RAVI
+RAJARAVI
+JARAVI
+RA

@@ -1,0 +1,179 @@
+Cross Join/Cartesian Product:
+----------------------------
+This join lists all the rows in all tables. No condition is specified here.
+
+create table emp_dtls_1(emp_id number, emp_date date, emp_atten varchar2(1));
+
+create table emp_master_1(emp_id number,
+                        emp_name varchar2(1000)
+                        );
+
+INSERT INTO emp_dtls_1 VALUES('101',SYSDATE-5, 'P');
+INSERT INTO emp_dtls_1 VALUES('102',SYSDATE-5, 'P');
+
+insert into emp_master_1 values('101','SURYA');
+insert into emp_master_1 values('102','BHAWAN');
+insert into emp_master_1 values('103','TAMIL');
+insert into emp_master_1 values('104','PONDY');
+insert into emp_master_1 values('105','PONDY');
+
+
+
+
+Natural Join: 
+------------
+This is something similar to cross join. But eliminates duplicate values in the output
+
+Step 1: (Simple Doing Cross Join):
+---------------------------------
+101	13-06-2022	P	101	13-06-2022	P
+101	13-06-2022	P	102	13-06-2022	P
+101	13-06-2022	P	101	13-06-2022	P
+101	13-06-2022	P	101	13-06-2022	P
+101	13-06-2022	P	102	13-06-2022	P
+102	13-06-2022	P	101	13-06-2022	P
+102	13-06-2022	P	102	13-06-2022	P
+102	13-06-2022	P	101	13-06-2022	P
+102	13-06-2022	P	101	13-06-2022	P
+102	13-06-2022	P	102	13-06-2022	P
+103	13-06-2022	P	101	13-06-2022	P
+103	13-06-2022	P	102	13-06-2022	P
+103	13-06-2022	P	101	13-06-2022	P
+103	13-06-2022	P	101	13-06-2022	P
+103	13-06-2022	P	102	13-06-2022	P
+104	13-06-2022	P	102	13-06-2022	P
+
+Step 2: (First Table Result only):
+--------------------------------
+101	13-06-2022	P	101
+101	13-06-2022	P	102
+101	13-06-2022	P	101
+101	13-06-2022	P	101
+101	13-06-2022	P	102
+102	13-06-2022	P	101
+102	13-06-2022	P	102
+102	13-06-2022	P	101
+102	13-06-2022	P	101
+102	13-06-2022	P	102
+103	13-06-2022	P	101
+103	13-06-2022	P	102
+103	13-06-2022	P	101
+103	13-06-2022	P	101
+103	13-06-2022	P	102
+104	13-06-2022	P	102
+
+Step 3: (Just Print the unique Row only):
+-----------------------------------------
+104	13-06-2022	P	102
+
+Anti Join:
+-----------
+It returns rows from the first table where no matches are found in the second table
+
+INSERT INTO emp_dtls_1 VALUES('101',SYSDATE-5, 'P');
+INSERT INTO emp_dtls_1 VALUES('102',SYSDATE-5, 'P');
+INSERT INTO emp_dtls_1 VALUES('106',SYSDATE-5, 'P');
+
+insert into emp_master_1 values('101','SURYA');
+insert into emp_master_1 values('102','BHAWAN');
+insert into emp_master_1 values('103','TAMIL');
+insert into emp_master_1 values('104','PONDY');
+insert into emp_master_1 values('105','PONDY');
+
+select * from emp_dtls_1 where emp_id not in (select emp_id from emp_master_1);
+
+Result:
+------
+106	13-06-22	P
+
+
+
+Semi-Join:
+---------
+It returns rows from the first table where one or more matches are found in the second 
+table
+
+emp_dtls_1
+-----------
+101	13-06-22	P
+102	13-06-22	P
+101	13-06-22	P
+101	13-06-22	P
+102	13-06-22	P
+106	13-06-22	P
+
+emp_master_1
+------------
+101	SURYA
+102	BHAWAN
+103	TAMIL
+104	PONDY
+105	PONDY
+
+Output: (Fetching Rows from first table (whatever EMP_id present in second table)
+------
+101	SURYA
+102	BHAWAN
+103	TAMIL
+104	PONDY
+105	PONDY
+
+
+
+
+Equi-Join & Non Equi-Join:   (Inner Join & Equi-Join Both are Similar)
+--------------------------
+Equi Join is a kind of join where condition used is equal(=) sign. And Non Equi-Join uses all comparison 
+operators except the equal (=) operator. Like >=, <=, <, >.
+
+Equi-Join:
+---------
+select * from emp_dtls_1, emp_master_1 where emp_id = emp_id
+
+Non Equi-Join:  (Other than = condition)  >=, <=, <, >
+-------------
+SELECT * FROM emp_dtls_4,emp_dtls_3 WHERE emp_dtls_4.emp_id >= emp_dtls_3.emp_id
+
+
+
+Constraints:
+-----------
+Constraints are the rules enforced on the data columns of a table. 
+These are used to limit the type of data that can go into a table. 
+This ensures the accuracy and reliability of the data in the database.
+
+
+Not Null Constraint 
+-------------------
+create table emp_master(emp_id number primary key,
+                        emp_name varchar2(50),
+                        mobile_no number,
+                        AADHAR number not null);
+
+insert into emp_master values(1002,'SURYA',NULL,NULL); --> AADHAR column not allow to insert null values (NOT NULL CONSTRAINTS voilated)
+
+
+drop table emp1_master;
+create table emp1_master (emp_ID number NOT NULL,emp_name varchar2(100) );
+
+
+insert into emp1_master values(101,'Rajavel')
+insert into emp1_master values(101,'Rajavel')
+insert into emp1_master values(NULL,'Sarath');
+
+select * from emp1_master
+
+
+Check Constraint
+----------------
+create table emp_master(emp_id number primary key,
+                        ID_CARD_no number,
+                        emp_name varchar2(50),
+                        mobile_no number,
+                        AADHAR number,
+                        emp_age number check(emp_age>=18));
+                        
+INSERT INTO emp_master VALUES ('1001','1465','SURYA','934938749','58475874',20);  --> success
+
+INSERT INTO emp_master VALUES ('1001','1465','SURYA','934938749','58475874',17);  --> failure ORA-02290: check constraint (GAYU.SYS_C0013118) violated
+(check(emp_age>=18))

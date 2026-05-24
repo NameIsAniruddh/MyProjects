@@ -1,0 +1,374 @@
+CREATE TABLE EMPLOYEES (
+    EMPLOYEE_ID      NUMBER(10)      PRIMARY KEY,
+    FIRST_NAME       VARCHAR2(50),
+    LAST_NAME        VARCHAR2(50),
+    EMAIL            VARCHAR2(100),
+    PHONE_NUMBER     VARCHAR2(20),
+    HIRE_DATE        DATE,
+    JOB_ID           VARCHAR2(20),
+    SALARY           NUMBER(10,2),
+    DEPARTMENT_ID    NUMBER(10),
+    MANAGER_ID       NUMBER(10)
+);
+
+INSERT INTO EMPLOYEES 
+(EMPLOYEE_ID, FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER, HIRE_DATE, JOB_ID, SALARY, DEPARTMENT_ID, MANAGER_ID)
+VALUES 
+(101, 'John', 'Doe', 'john.doe@example.com', '9876543210', DATE '2023-01-10', 'DEV01', 55000, 10, 1001);
+
+INSERT INTO EMPLOYEES 
+(EMPLOYEE_ID, FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER, HIRE_DATE, JOB_ID, SALARY, DEPARTMENT_ID, MANAGER_ID)
+VALUES 
+(102, 'Priya', 'Sharma', 'priya.sharma@example.com', '9876501234', DATE '2023-02-15', 'QA02', 48000, 20, 1002);
+
+INSERT INTO EMPLOYEES 
+(EMPLOYEE_ID, FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER, HIRE_DATE, JOB_ID, SALARY, DEPARTMENT_ID, MANAGER_ID)
+VALUES 
+(103, 'Kumar', 'Ravi', 'kumar.ravi@example.com', '9876512345', DATE '2023-03-20', 'HR03', 52000, 30, 1003);
+
+INSERT INTO EMPLOYEES 
+(EMPLOYEE_ID, FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER, HIRE_DATE, JOB_ID, SALARY, DEPARTMENT_ID, MANAGER_ID)
+VALUES 
+(104, 'Sara', 'Lee', 'sara.lee@example.com', '9876523456', DATE '2023-04-05', 'FIN04', 60000, 40, 1004);
+
+INSERT INTO EMPLOYEES 
+(EMPLOYEE_ID, FIRST_NAME, LAST_NAME, EMAIL, PHONE_NUMBER, HIRE_DATE, JOB_ID, SALARY, DEPARTMENT_ID, MANAGER_ID)
+VALUES 
+(105, 'Raj', 'Vel', 'raj.vel@example.com', '9876534567', DATE '2023-05-12', 'DEV01', 65000, 10, 1001);
+
+
+
+
+
+
+Sub-Query : 
+ In Oracle, a sub-query is a query within a query. You can create sub-queries within your SQL statements.  
+ A sub-query may occur in : 
+	 A SELECT clause 
+	
+		SELECT ATTENDANCE_ID , 
+		EMPLOYEE_ID    ,
+		(SELECT FIRST_NAME||LAST_NAME EMP_NAME FROM EMPLOYEES 
+		WHERE EMPLOYEES.EMPLOYEE_ID = EMPLOYEE_ATTENDANCE.EMPLOYEE_ID) EMPLOYEE_NAME,
+		ATTENDANCE_DATE,
+		IN_TIME        ,
+		OUT_TIME       ,
+		STATUS         ,
+		REMARKS        
+		  FROM EMPLOYEE_ATTENDANCE;
+	
+	
+	 A FROM clause 
+	
+		SELECT A.EMPLOYEE_ID, A.EMPLOYEE_NAME
+		  FROM (
+			SELECT ATTENDANCE_ID , 
+		EMPLOYEE_ID    ,
+		(SELECT FIRST_NAME||LAST_NAME EMP_NAME FROM EMPLOYEES 
+		WHERE EMPLOYEES.EMPLOYEE_ID = EMPLOYEE_ATTENDANCE.EMPLOYEE_ID) EMPLOYEE_NAME,
+		ATTENDANCE_DATE,
+		IN_TIME        ,
+		OUT_TIME       ,
+		STATUS         ,
+		REMARKS        
+		  FROM EMPLOYEE_ATTENDANCE
+		  ) A, 
+		  (SELECT * EMPLOYEE_ATTENDANCE WHERE YEAR = 2021)B
+		WHERE A.EMP_ID = B.EMP_ID
+
+	 A WHERE clause 
+
+
+
+Types of Sub-Query: 
+ Single row sub-query              
+ Multiple row sub-query          
+	: Returns zero or one row. 
+	: Returns one or more rows. 
+ Multiple column sub-queries : Returns one or more columns. 
+ Correlated sub-queries       
+     Correlated sub-queries are the one in which inner query or sub-query reference outer query. Outer query needs to be executed before inner query.  
+	 One of the most common example of correlated sub-query is using keywords exits and not exits.  
+	 An important point to note is that correlated sub-queries are slower queries and one should avoid it as much as possible.   
+     Correlated Sub-queries are slower than non correlated sub-query and should be avoided in favor of SQL joins.     
+ Non-Correlated sub-queries : 
+	 In non correlated sub-query, inner query doesn't depend on outer query and can run as stand alone query. 
+	 Sub-query used along-with IN or NOT IN SQL clause is good examples of Non-correlated sub-query in SQL. 
+ Nested sub-queries                   
+	: Sub-queries are placed within another sub-query. 
+	
+	
+Single row sub-Query : - (Within the sub-query as only one row) 
+		SELECT EMPLOYEE_ID, 
+		SALARY 
+		FROM EMPLOYEES 
+		WHERE SALARY = 
+		( 
+		SELECT  MAX(SALARY) 
+		FROM EMPLOYEES 
+		); 
+Multi-Row Sub-Query : - (Within the sub-query as more than one row) 
+		SELECT EMPLOYEE_ID, 
+		SALARY 
+		FROM EMPLOYEES 
+		WHERE SALARY IN 
+		( 
+		SELECT  SALARY 
+		FROM EMPLOYEES 
+		WHERE DEPARTMENT_ID = 300 
+		); 
+Multi-Column Sub-Query : 
+		SELECT EMPLOYEE_ID, 
+		SALARY 
+		FROM EMPLOYEES 
+		WHERE SALARY,DEPARTMENT_ID IN 
+		( 
+		SELECT  SALARY,DEPARTMENT_ID 
+		FROM EMPLOYEES 
+		WHERE DEPARTMENT_ID = 300 
+		); 
+Correlated Sub-Query : - (inner query or sub-query reference outer query) 
+		SELECT *
+		  FROM EMPLOYEE_ATTENDANCE A
+		 WHERE EXISTS (SELECT 1 FROM EMPLOYEES B WHERE B.EMPLOYEE_ID = A.EMPLOYEE_ID)
+
+
+
+		SELECT DEPARTMENT_ID, 
+		EMPLOYEE_ID, 
+		SALARY 
+		FROM EMPLOYEES E_0 
+		WHERE 1 =  
+		( 
+		SELECT  COUNT(DISTINCT SALARY) 
+		FROM EMPLOYEES E_I 
+		WHERE E_O.DEPARTMENT_ID = E_I.DEPARTMENT_ID 
+		AND E_O.SALARY <=  E_I.SALARY); 
+		
+
+Non-Correlated Sub-Query : (Inner does not depends on outer query) 
+
+		SELECT *
+		  FROM EMPLOYEE_ATTENDANCE
+		WHERE (EMPLOYEE_ID,DEPARTMENT_ID) IN 
+		(SELECT EMPLOYEE_ID,DEPARTMENT_ID FROM EMPLOYEES WHERE SALARY >= 60000); 
+
+		SELECT COMPANY 
+		FROM Stock 
+		WHERE LISTED_ON_EXCHANGE IN 
+		(SELECT RIC 
+		FROM Market 
+		WHERE COUNTRY = 'United States' OR COUNTRY = 'INDIA'); 
+		
+Nested Sub-Query : A sub-query is nested when you are having a sub-query in the where or having clause of another sub-query. 
+		Select * 
+		From result 
+		where rollno in (select rollno 
+		from student 
+		where courseid = (select courseid 
+		from student 
+		where rollno = 12)); 
+		
+
+
+Hierarchical Queries
+--------------------
+
+CREATE TABLE HIR_TABLE(PARENT_ID NUMBER, 
+                       PARENT_NAME  VARCHAR2(50), 
+                       CHILD_ID NUMBER, 
+                       CHILD_NAME   VARCHAR2(50)); 
+
+Inserting a value: 
+INSERT INTO HIR_TABLE VALUES(NULL,NULL,1,'RAVI'); 
+INSERT INTO HIR_TABLE VALUES(1,'RAVI',2,'ANAND'); 
+INSERT INTO HIR_TABLE VALUES(1,'RAVI',3,'ANI'); 
+INSERT INTO HIR_TABLE VALUES(1,'RAVI',4,'ANU'); 
+INSERT INTO HIR_TABLE VALUES(2,'ANAND',5,'MANI'); 
+INSERT INTO HIR_TABLE VALUES(2,'ANAND',6,'HEMA'); 
+INSERT INTO HIR_TABLE VALUES(2,'ANAND',7,'PARVEEN'); 
+INSERT INTO HIR_TABLE VALUES(3,'ANI',8,'PRABU'); 
+INSERT INTO HIR_TABLE VALUES(3,'ANI',9,'VIJAY'); 
+INSERT INTO HIR_TABLE VALUES(3,'ANI',10,'ANTONY'); 
+INSERT INTO HIR_TABLE VALUES(4,'ANU',11,'MAYA'); 
+INSERT INTO HIR_TABLE VALUES(4,'ANU',12,'THINA'); 
+INSERT INTO HIR_TABLE VALUES(4,'ANU',13,'TAMIL'); 
+INSERT INTO HIR_TABLE VALUES(13,'TAMIL',14,'TAZHANI'); 
+
+
+Hierarchial query: 
+SELECT LEVEL, 
+             CONNECT_BY_ROOT  PARENT_ID, 
+       CONNECT_BY_ISLEAF, 
+       LTRIM(SYS_CONNECT_BY_PATH(PARENT_ID, '-'), '-'), 
+       PARENT_NAME, 
+       CONNECT_BY_ISCYCLE, 
+       CHILD_NAME FROM HIR_TABLE START WITH PARENT_ID =1 CONNECT BY NOCYCLE 
+PARENT_ID = PRIOR CHILD_ID;
+
+
+
+Group By & Having Clause:
+------------------------
+
+CREATE TABLE EMPLOYEES (
+    EMPLOYEE_ID      int PRIMARY KEY,
+    FIRST_NAME       string,
+    LAST_NAME       string,
+    EMAIL            string,
+    PHONE_NUMBER     string,
+    HIRE_DATE        DATE,
+    JOB_ID           string,
+    SALARY           int,
+    DEPARTMENT_ID    int,
+    MANAGER_ID       int
+);
+
+
+INSERT INTO EMPLOYEES VALUES (101, 'John', 'Doe', 'john.doe@example.com', '9876543210', DATE '2023-01-10', 'DEV01', 55000, 10, 1001);
+INSERT INTO EMPLOYEES VALUES (102, 'Priya', 'Sharma', 'priya.sharma@example.com', '9876501234', DATE '2023-02-15', 'QA02', 48000, 20, 1002);
+INSERT INTO EMPLOYEES VALUES (103, 'Kumar', 'Ravi', 'kumar.ravi@example.com', '9876512345', DATE '2023-03-20', 'HR03', 52000, 30, 1003);
+INSERT INTO EMPLOYEES VALUES (104, 'Sara', 'Lee', 'sara.lee@example.com', '9876523456', DATE '2023-04-05', 'FIN04', 60000, 40, 1004);
+INSERT INTO EMPLOYEES VALUES (105, 'Raj', 'Vel', 'raj.vel@example.com', '9876534567', DATE '2023-05-12', 'DEV01', 65000, 10, 1001);
+
+
+select department_id,sum(SALARY),count(EMPLOYEE_ID) from EMPLOYEES
+group by department_id having sum(SALARY) =120000
+
+
+-------------------
+
+Built-in Function : - > There are two types : 
+ Single Row Function 
+ Group Function 
+Single Row Function : 
+ Numeric Function ->  
+	 CEIL 
+	 FLOOR 
+	  ROUND 
+	  TRUNC 
+	  ABS 
+	  SIGN 
+	  MOD 
+	
+select CEIL(10.0123)
+select floor(10.987)
+select round(10.5638, 2)
+select trunc(10.768234, 2)
+select ABS(-1948575)
+select SIGN(-1948575)
+select MOD(12,5)
+
+	-------
+	  EXP 
+	  LN 
+	  LOG 
+	  POWER 
+	  REMAINDER
+	-------
+
+
+ Character Function -> 
+	 CONCAT 
+	 SUBSTR 
+	 INSTR 
+	 INITCAP 
+	 TRIM 
+	 LTRIM 
+	 RTRIM
+	 LPAD 
+	 RPAD  
+	 REPLACE 
+	-----------
+	 TRANSLATE.	
+	 ASCII
+	 CHR 
+	-----------
+	
+select concat('RAJAVEL','EEE','PASS')
+SELECT SUBSTR('RAJAVEL',2,3) --> AJA
+SELECT instr('RAJAVEL','A',1,2)
+select initcap('rajaVel')
+select TRIM(' RAJAVEL ')
+SELECT LTRIM('RAJAVEL ','R')
+SELECT RTRIM('RAJAVEL','L')
+SELECT LPAD('RAJ',5,'0')
+SELECT RPAD('RAJ',5,'0')
+SELECT REPLACE('RAJAVEL','JA','FF')
+	
+
+DATATIME Function ->  
+	 ADD_MONTHS 
+	 LAST_DAY 
+	 MONTHS_BETWEEN 
+	 NEXT_DAY 
+	 ROUND (date) 
+	 TRUNC (DATE) 
+	 TO_CHAR (datetime)
+	 SYSDATE  --NO NEED
+	 SYSTIMESTAMP  -- NO NEED
+	 CURRENT_DATE 
+	 CURRENT_TIMESTAMP 
+
+
+SELECT ADD_MONTHS(current_date,1)
+SELECT LAST_DAY(current_date)
+SELECT MONTHS_BETWEEN('2023-01-31','2026-01-31')
+SELECT NEXT_DAY(current_date,'SUNDAY')
+SELECT ROUND(TO_DATE('2026-5-18','YYYY-MM-DD'),'')
+SELECT ROUND(TO_DATE('2026-7-18 13:30','YYYY-MM-DD HH24:MI'),'YYYY')
+SELECT TRUNC(TO_DATE('2026-5-18','YYYY-MM-DD'),'MM')
+SELECT TRUNC(TO_DATE('2026-7-18 13:30','YYYY-MM-DD HH24:MI'),'YYYY')
+
+	---------
+	 EXTRACT. 
+	---------
+	
+ Conversion Function : 
+	 NVL, NVL2, COALESCE 
+	 DECODE 
+	 TO_CHAR  --> DATE_FORMAT
+	 TO_DATE 
+
+
+SELECT NVL('RAJAVEL','N/A')
+SELECT NVL(NULL,'N/A')
+SELECT NVL2('RAJAVEL','OK','NOT OK')
+SELECT NVL2(NULL,'OK','NOT OK')
+SELECT COALESCE(NULL,NULL,NULL,'RAJAVEL',NULL,NULL,'TAMIL')
+SELECT DECODE('MALEJJ','FEMALE','F','MALE','M','N/A')
+SELECT 
+    current_date AS today,
+    date_format(current_date, 'yyyy-MM-dd') AS formatted_date,
+    date_format(current_date, 'dd-MMM-yyyy') AS formatted_date2;
+SELECT 
+    to_date('2024-01-15', 'yyyy-MM-dd') AS converted_date;
+
+	
+ General Comparison Function : 
+	 LEAST 
+	 GREATEST 
+	
+SELECT greatest(SALARY,SALARY+1000,SALARY+2000) FROM EMPLOYEES
+SELECT least(SALARY,SALARY+1000,SALARY+2000) FROM EMPLOYEES
+	
+Group Function : 
+
+	 Aggregate Functions: 
+	 COUNT 
+	 MIN 
+	 MAX 
+	 AVG 
+	 SUM 
+	 DISTINCT
+	
+select department_id,count(salary),sum(salary),min(salary),max(salary),avg(salary) from EMPLOYEES
+group by department_id
+select distinct employee_id,department_id from EMPLOYEES
+	
+Analtical Functions:
+    Lead
+	Lag
+	Rank
+	Dense Rank
+	row_number

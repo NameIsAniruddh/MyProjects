@@ -1,0 +1,84 @@
+Create table employee(emp_id number, emp_salary number);
+
+COMMIT:
+------
+-> committing the data into the Database Permenantly.
+
+insert into employee values(101,20222);
+insert into employee values(102,20200);
+commit;
+
+Both Above insert emp_id 101, 102 is Permenantly saved into the database.
+
+
+Rollback:
+--------
+--> Rollback upto the last commit.
+
+insert into employee values(101,20222);
+commit;   						--> (step 1)
+insert into employee values(102,20200);
+insert into employee values(103,20200);
+Rollback;  --> Delete the upto the last commit.  	--> (upto Step 1)
+
+Above queries emp_id 101 is Permenantly saved into the database (Because of Commit).
+But emp_id  102, 103 are deleted because of Rollback executed. (Rollback upto the last commit).
+
+SavePoint:
+---------
+--> Like a watermarker (its used for the Partial Rollback upto the SavePoint created).
+
+insert into employee values(101,20222);
+commit;  
+insert into employee values(102,20200);
+insert into employee values(103,20200);
+savepoint SP1;                                                 --> Step 1
+insert into employee values(102,20200);
+insert into employee values(103,20200);
+
+Rollback SP1;  --> Delete the upto the last Savepoint SP1.  	--> (upto Step 1)
+
+
+
+Merge:
+-----
+-->Merge will compare the two Table.
+   If Matched then its going update the existing value for correction.
+   If not Matched then its going to insert the value.
+
+Create table emp_details(Emp_id NUMBER,
+                         Emp_name VARCHAR2(100),
+                         EMP_SALARY NUMBER,
+                         EMP_ADDRESS VARCHAR2(1000),
+                         EMP_CONTACT NUMBER,
+                         EMP_MAIL_ID VARCHAR2(100)
+						 EMP_JOIN_DATE  DATE
+                         );
+
+insert into emp_details values(101,'RAJA',1000,'101 ANNA STREET',90879800,'rajavel@gmail.com');
+insert into emp_details values(102,'RAJA',2000,'101 ANNA STREET',90879800,'rajavel@gmail.com');
+insert into emp_details values(103,'RAJA',3000,'101 ANNA STREET',90879800,'rajavel@gmail.com');
+insert into emp_details values(104,'RAJA',4000,'101 ANNA STREET',90879800,'rajavel@gmail.com');
+
+Create table emp_details1(Emp_id NUMBER,
+                         Emp_name VARCHAR2(100),
+                         EMP_SALARY NUMBER,
+                         EMP_ADDRESS VARCHAR2(1000),
+                         EMP_CONTACT NUMBER,
+                         EMP_MAIL_ID VARCHAR2(100)
+                         );
+
+insert into emp_details values(101,'RAJA',0,'101 ANNA STREET',90879800,'rajavel@gmail.com');
+insert into emp_details values(102,'RAJA',0,'101 ANNA STREET',90879800,'rajavel@gmail.com');
+insert into emp_details values(103,'RAJA',0,'101 ANNA STREET',90879800,'rajavel@gmail.com');
+
+
+MERGE INTO 
+emp_details A
+USING
+(SELECT * FROM emp_apprisal) B
+ON (A.EMP_ID = B.EMP_ID)
+WHEN  MATCHED THEN 
+UPDATE SET A.EMP_SALARY = B.EMP_SALARY+100
+ when NOT matched then
+  insert (A.Emp_id ,A.Emp_name ,A.EMP_SALARY ,A.EMP_ADDRESS ,A.EMP_CONTACT , A.EMP_MAIL_ID) values(B.Emp_id ,B.Emp_name ,B.EMP_SALARY ,B.EMP_ADDRESS ,B.EMP_CONTACT , B.EMP_MAIL_ID);

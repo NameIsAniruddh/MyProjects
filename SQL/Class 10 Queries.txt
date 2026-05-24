@@ -1,0 +1,189 @@
+Joins:
+-----
+--> Join is a method used to combine two or more tables, views or materialized views based on a common condition
+--> JOINS are used to retrieve data from multiple tables
+
+Types of Joins:
+--------------
+Inner Join
+Outer join 
+Left Outer Join 
+Right Outer Join
+ Full Outer Join 
+Cross Join/Cartesian Product 
+Natural Join 
+Anti Join 
+Semi Join
+Self Join 
+Equi Join and Non Equi Join
+
+
+INNER JOIN:
+-----------
+create table emp_master(emp_id number,
+                        emp_name varchar2(1000)
+                        );
+                        
+insert into emp_master values('101','SURYA');
+insert into emp_master values('102','BHAWAN');
+insert into emp_master values('103','TAMIL');
+insert into emp_master values('104','PONDY');
+insert into emp_master values('105','PONDY');
+
+Create table emp_details(emp_id number,emp_att_date DATE,EMP_STATUS VARCHAR2(1));
+
+INSERT INTO emp_details VALUES('101',SYSDATE-5, 'P');
+INSERT INTO emp_details VALUES('101',SYSDATE-4, 'P');
+INSERT INTO emp_details VALUES('101',SYSDATE-3, 'P');
+INSERT INTO emp_details VALUES('101',SYSDATE-2, 'P');
+INSERT INTO emp_details VALUES('102',SYSDATE-5, 'P');
+INSERT INTO emp_details VALUES('102',SYSDATE-4, 'P');
+INSERT INTO emp_details VALUES('102',SYSDATE-3, 'P');
+INSERT INTO emp_details VALUES('102',SYSDATE-2, 'P');
+INSERT INTO emp_details VALUES('105',SYSDATE-5, 'P');
+INSERT INTO emp_details VALUES('105',SYSDATE-4, 'P');
+INSERT INTO emp_details VALUES('105',SYSDATE-3, 'P');
+INSERT INTO emp_details VALUES('105',SYSDATE-2, 'P');
+INSERT INTO emp_details VALUES('106',SYSDATE-5, 'P');
+INSERT INTO emp_details VALUES('106',SYSDATE-4, 'P');
+INSERT INTO emp_details VALUES('106',SYSDATE-3, 'P');
+INSERT INTO emp_details VALUES('106',SYSDATE-2, 'P');
+
+
+SELECT emp_details.emp_id,emp_details.emp_att_date,emp_details.EMP_STATUS,emp_master.emp_name 
+FROM emp_details,emp_master WHERE emp_details.emp_id = emp_master.emp_id;
+
+SELECT emp_details.emp_id,emp_details.emp_att_date,emp_details.EMP_STATUS,emp_master.emp_name 
+FROM emp_details INNER JOIN emp_master ON emp_details.emp_id = emp_master.emp_id;
+
+101	16-05-22	P	SURYA
+101	17-05-22	P	SURYA
+101	18-05-22	P	SURYA
+101	19-05-22	P	SURYA
+102	16-05-22	P	BHAWAN
+102	17-05-22	P	BHAWAN
+102	18-05-22	P	BHAWAN
+102	19-05-22	P	BHAWAN
+105	16-05-22	P	PONDY
+105	17-05-22	P	PONDY
+105	18-05-22	P	PONDY
+105	19-05-22	P	PONDY
+
+Outer Join:
+----------
+Left Outer Join:
+---------------
+SELECT *
+FROM emp_details,emp_master WHERE emp_details.emp_id = emp_master.emp_id(+);
+
+SELECT emp_details.emp_id,emp_details.emp_att_date,emp_details.EMP_STATUS,emp_master.emp_name 
+FROM emp_details LEFT OUTER JOIN emp_master ON emp_details.emp_id = emp_master.emp_id;
+
+Output:
+------
+101	19-05-22	P	101	SURYA
+101	18-05-22	P	101	SURYA
+101	17-05-22	P	101	SURYA
+101	16-05-22	P	101	SURYA
+102	19-05-22	P	102	BHAWAN
+102	18-05-22	P	102	BHAWAN
+102	17-05-22	P	102	BHAWAN
+102	16-05-22	P	102	BHAWAN
+105	19-05-22	P	105	PONDY
+105	18-05-22	P	105	PONDY
+105	17-05-22	P	105	PONDY
+105	16-05-22	P	105	PONDY
+106	19-05-22	P		
+106	18-05-22	P		
+106	17-05-22	P		
+106	16-05-22	P		
+
+Right Outer Join:
+-----------------
+SELECT *
+FROM emp_details,emp_master WHERE emp_details.emp_id(+) = emp_master.emp_id;
+
+SELECT *
+FROM emp_details RIGHT OUTER JOIN emp_master ON emp_details.emp_id = emp_master.emp_id;
+
+Output:
+------
+101	16-05-22	P	101	SURYA
+101	17-05-22	P	101	SURYA
+101	18-05-22	P	101	SURYA
+101	19-05-22	P	101	SURYA
+102	16-05-22	P	102	BHAWAN
+102	17-05-22	P	102	BHAWAN
+102	18-05-22	P	102	BHAWAN
+102	19-05-22	P	102	BHAWAN
+105	16-05-22	P	105	PONDY
+105	17-05-22	P	105	PONDY
+105	18-05-22	P	105	PONDY
+105	19-05-22	P	105	PONDY
+			103	TAMIL
+			104	PONDY
+
+Full Outer Join:
+---------------
+SELECT *
+FROM emp_details FULL OUTER JOIN emp_master  ON emp_details.emp_id = emp_master.emp_id;
+
+Output:
+------
+101	16-05-22	P	101	SURYA
+101	17-05-22	P	101	SURYA
+101	18-05-22	P	101	SURYA
+101	19-05-22	P	101	SURYA
+102	16-05-22	P	102	BHAWAN
+102	17-05-22	P	102	BHAWAN
+102	18-05-22	P	102	BHAWAN
+102	19-05-22	P	102	BHAWAN
+105	16-05-22	P	105	PONDY
+105	17-05-22	P	105	PONDY
+105	18-05-22	P	105	PONDY
+105	19-05-22	P	105	PONDY
+106	16-05-22	P		
+106	17-05-22	P		
+106	18-05-22	P		
+106	19-05-22	P		
+			103	TAMIL
+			104	PONDY
+
+
+self Join:
+---------
+
+
+
+CREATE TABLE employees (
+    employee_id INT PRIMARY KEY,
+    name VARCHAR(50),
+    manager_id INT,
+    department VARCHAR(50),
+    salary INT,
+    FOREIGN KEY (manager_id) REFERENCES employees(employee_id)
+);
+
+
+INSERT INTO employees (employee_id, name, manager_id, department, salary) VALUES
+(1, 'Kumar', NULL, 'Management', 150000),     -- CEO
+(2, 'Raj', 1, 'Engineering', 90000),
+(3, 'Meena', 1, 'Engineering', 85000),
+(4, 'Suresh', 2, 'Engineering', 70000),
+(5, 'Priya', 2, 'Engineering', 72000),
+(6, 'Anita', 3, 'HR', 65000),
+(7, 'Vijay', 3, 'HR', 60000);
+
+
+SELECT 
+    e.employee_id,
+    e.name AS employee_name,
+    e.manager_id,
+    m.name AS manager_name,
+    e.department,
+    e.salary
+FROM employees e
+LEFT JOIN employees m
+    ON e.manager_id = m.employee_id
+ORDER BY e.employee_id;
+

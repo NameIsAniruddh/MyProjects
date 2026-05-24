@@ -1,0 +1,167 @@
+NULL   --> 
+----
+1. its a Empty
+2. NULL is not equal to NULL. (NULL Value not able to compare with any value).
+3. 'NULL' is different then compare to NULL.
+
+create table test_null (emp_name varchar2(10));
+
+insert into test_null values('SURYA');
+insert into test_null values('SARAVANAN');
+insert into test_null values('NULL');
+insert into test_null values(NULL);
+insert into test_null values('BHAWAN');
+
+
+SELECT * FROM TEST_NULL WHERE EMP_NAME = 'NULL';  --> CHARACTER 'NULL' (OR) NULL.
+
+result:
+------
+'NULL'
+
+SELECT * FROM TEST_NULL WHERE EMP_NAME = NULL;
+
+Result:
+-------
+
+-------
+
+SELECT * FROM TEST_NULL WHERE EMP_NAME IS NULL;
+
+Result:
+------
+(null)
+
+
+SELECT * FROM TEST_NULL WHERE EMP_NAME IS NOT NULL;
+RESULT:
+-------
+SURYA
+SARAVANAN
+NULL
+BHAWAN
+
+
+EXISTS (OR) NOT EXISTS:
+----------------------
+
+----steps for EXISTS--------------------------
+step 1: Oracle doing Row by Row Operation.
+Step 2: As per Parent Query the take one row('101',sysdate-10,'A'); --> Going to pass value to child query
+SELECT * FROM emp_attendance
+Step 3: SELECT 1 FROM emp_master WHERE emp_master.EMP_ID = '101'/*emp_attendance.EMP_ID*/ --> Child query.
+Step 4: Whether Output Present in Child query or not.
+Step 5: if output present the parent query taken into consider else its not consider.
+create table emp_master(emp_id number,emp_name varchar2(100),emp_position varchar2(100));
+-----------------------------------------------
+
+
+insert into emp_master values('101','TAMIL','STORE KEPPER');
+insert into emp_master values('102','PAZHANI','ASSISTANCE');
+insert into emp_master values('103','RAVI','MANAGER');
+insert into emp_master values('104','SARAVANAN','MAINTANANCE');
+
+create table emp_attendance(emp_id number,work_date date,emp_attendance varchar2(1));
+
+insert into emp_attendance values('101',sysdate-10,'A');
+insert into emp_attendance values('101',sysdate-9,'P');
+insert into emp_attendance values('102',sysdate-10,'P');
+insert into emp_attendance values('102',sysdate-9,'P');
+insert into emp_attendance values('105',sysdate-10,'P');
+insert into emp_attendance values('105',sysdate-9,'P');
+insert into emp_attendance values('110',sysdate-10,'P');
+insert into emp_attendance values('110',sysdate-9,'P');
+
+
+EXISTS:
+------
+SELECT * FROM emp_attendance
+WHERE EXISTS (SELECT 1 FROM emp_master WHERE emp_master.EMP_ID = emp_attendance.EMP_ID);
+
+RESULT:
+------
+101	14-04-22	P
+101	13-04-22	A
+102	14-04-22	P
+102	13-04-22	P
+
+
+
+NOT EXISTS:
+------
+SELECT * FROM emp_attendance
+WHERE NOT EXISTS (SELECT 1 FROM emp_master WHERE emp_master.EMP_ID = emp_attendance.EMP_ID);
+ 
+110	14-04-22	P
+110	13-04-22	P
+105	14-04-22	P
+105	13-04-22	P
+
+
+AND    --> Going to combine one or more condition.
+----
+select * from emp_attendance where emp_id = '105' AND EMP_ATTENDANCE = 'A' AND TO_DATE(WORK_DATE,'DD-MM-YY') = '15-04-22'
+
+RESULT:
+------
+105	15-04-22	A
+
+
+OR    -->  the going to check one by one (1 -> 10) if any condition satisfied or not.
+---
+select * from emp_attendance where emp_id = '120'  OR  emp_id = '130' OR emp_id = '140'
+OR emp_id = '101' OR EMP_ATTENDANCE = 'C' or EMP_ATTENDANCE = 'D'
+
+RESULT:
+------
+101	13-04-22	A
+
+COMBINE AND and OR:
+------------------
+select * from emp_attendance where (EMP_ID = '101' or EMP_ID = '110' or EMP_ID = '106') AND TO_DATE(WORK_DATE,'DD-MM-YY') = '14-04-22' 
+
+Result:
+------
+101	14-04-22	P
+110	14-04-22	P
+
+
+union
+-----
+create table emp_master(emp_id number,emp_name varchar2(100),emp_position varchar2(100));
+create table emp_master_2(emp_id number,emp_name varchar2(100),emp_position varchar2(100));
+
+
+---emp_master--
+insert into emp_master values('101','TAMIL','STORE KEPPER');
+insert into emp_master values('103','RAVI','MANAGER');
+insert into emp_master values('102','PAZHANI','ROOM BOY');
+insert into emp_master values('104','SARAVANAN','MAINTANANCE');
+
+--emp_master_2--
+insert into emp_master_2 values('130','TAMIL','STORE KEPPER');
+insert into emp_master_2 values('140','RAVI','MANAGER');
+insert into emp_master_2 values('102','PAZHANI','ASSISTANCE');
+insert into emp_master values('104','SARAVANAN','MAINTANANCE');
+
+select * from emp_master
+union 
+select * FROM emp_master
+
+RESULT:
+------
+101	TAMIL	STORE KEPPER
+102	PAZHANI	ROOM BOY
+103	RAVI	MANAGER
+104	SARAVANAN	MAINTANANCE
+
+select emp_id from emp_master
+union 
+select emp_id FROM emp_master
+
+RESULT:
+------
+101
+102
+103
+104

@@ -1,0 +1,154 @@
+Datatype:
+--------
+
+Long Datatype:
+-------------
+Long --> 2 GB Capacity
+     --> Storing Only Character
+
+Drawbacks:
+1. Not able to define two Long in a Table.
+create table datatype_dis(emp_id number,
+                          emp_details Long,
+                          emp_details1 Long,);
+
+2. Where clause filter also not Possible.
+SELECT * FROM datatype_dis where emp_details = 'RAVI IS NON-TECHNICAL PERSON'
+3. Long Datatype Not able to retrun in Function.
+
+
+RAW Datatype:  --> 2MB Capacity
+------------
+RAW --> digital data --> Audio, Video, images.
+PLSQL Datatype No need to discuss.
+
+Long RAW Datatype:  --> 2GB Capacity
+-----------------
+LONG RAW  --> Going to Declare a DataType to store a Digital Data.
+
+Storing is a Part of Frontend Roll.
+------------
+create table datatype_dis(emp_id number,
+                          emp_details Long RAW);
+
+Error starting at line : 8 in command -
+insert into datatype_dis values(101,'RAVI IS NON-TECHNICAL PERSON')
+Error report -
+ORA-01465: invalid hex number
+---------------
+
+Boolean Datatype:
+----------------
+TRUE, FALSE, NULL  --> PLSQL Datatype.
+
+
+DATE Datatype:
+-------------
+
+SYSDATE --> 02-04-22
+SYSTIMESTAMP --> 02-04-22 9:03:17.648000000 PM +05:30
+
+(Note : Upstream (Input)  --> Oracle (Perfom Some Operation) & Passing Output --> Downstream (Receving Output))
+
+DATE:  --> (TO_DATE   --> To Define the format of input)
+----
+DD-MON-YYYY  --> Oracle Accepting this format input only in older Version.
+
+Negative Part
+-------------
+insert into datatype_dis values(101,'APR-02-2020');
+
+Error starting at line : 10 in command -
+insert into datatype_dis values(101,'APR-02-2020')
+Error report -
+ORA-01858: a non-numeric character was found where a numeric was expected
+
+
+--------Solution of Above Negative Case--------
+Soultion:  to_date('APR-02-2020','MON-DD-YYYY')  --> Convey format of input date to Oracle (your not using Pre-defined date format).
+insert into datatype_dis values(101,to_date('APR-02-2020','MON-DD-YYYY'));
+
+-----------------------------------------------
+
+TIMESTAMP:    (TO_TIMESTAMP   --> To Define the format of input)
+------------
+12 Hours  --> 'DD-MON-YYYY HH:MI:SS AM' (or) 'DD-MON-YYYY HH:MI:SS PM'
+24 Hours  --> 'DD-MON-YYYY HH24:MI:SS'
+
+insert into datatype_dis values(101,'02-APR-2022 09:24:00 PM');
+
+insert into datatype_dis values(102,'06-APR-2022 12:24:00');
+
+insert into datatype_dis values(103,to_timestamp('APR-05-2022 21:24:00','MON-DD-YYYY HH24:MI:SS'));
+
+insert into datatype_dis values(101,to_timestamp('APR-03-2022 09:24:00 PM','MON-DD-YYYY HH:MI:SS AM'));
+
+insert into datatype_dis values(104,to_timestamp('APR-03-2022 09:24:00 PM','MON-DD-YYYY HH:MI:SS PM'));
+
+
+RESULT:
+------
+101	02-04-22 9:24:00.000000000 PM
+102	06-04-22 12:24:00.000000000 PM
+103	05-04-22 9:24:00.000000000 PM
+101	03-04-22 9:24:00.000000000 PM
+104	03-04-22 9:24:00.000000000 PM
+
+
+---> Accept the input
+---> converting input into the default format internally
+---> Afterwards the going to store.
+-------------------------------------------------------------
+insert into datatype_dis values(101,to_timestamp('APR-03-2022 09:24:00 PM','MON-DD-YYYY HH:MI:SS AM'));  --> MON-DD-YYYY
+insert into datatype_dis values(102,to_timestamp('03-APR-2022 09:24:00 PM','DD-MON-YYYY HH:MI:SS AM'));  --> DD-MON-YYYY
+insert into datatype_dis values(103,to_timestamp('2022-APR-03 09:24:00 PM','YYYY-MON-DD HH:MI:SS PM'));  --> YYYY-MON-DD
+insert into datatype_dis values(104,to_timestamp('APR-03-2022 09:24:00 PM','MON-DD-YYYY HH:MI:SS AM'));  --> YYYY-MON-DD 12hours
+insert into datatype_dis values(105,to_timestamp('APR-03-2022 21:24:00','MON-DD-YYYY HH24:MI:SS'));  --> YYYY-MON-DD 24hours
+
+OUTPUT:  --> Oracle Store Value in a default format (TO_TIMESTAMP, TO_DATE --> Its only for reading purpose)
+------
+101	03-04-22 9:24:00.000000000 PM
+102	03-04-22 9:24:00.000000000 PM
+103	03-04-22 9:24:00.000000000 PM
+104	03-04-22 9:24:00.000000000 PM
+105	03-04-22 9:24:00.000000000 PM
+
+
+TO_CHAR:   (User requesting output of date (or) datetime with the user defined format).
+--------
+select emp_id,to_char(emp_join,'MON-DD-YYYY HH:MI:SS AM') from datatype_dis
+
+OUTPUT:
+------
+101	03-04-22 9:24:00.000000000 PM
+102	03-04-22 9:24:00.000000000 PM
+103	03-04-22 9:24:00.000000000 PM
+104	03-04-22 9:24:00.000000000 PM
+105	03-04-22 9:24:00.000000000 PM
+
+
+Large Object Datatype:
+---------------------
+
+CLOB Datatype:  --> CHARACTER Large Object --> 4GB CAPACITY.
+-------------
+
+create table datatype_dis(emp_id number,
+                          emp_join CLOB,
+                          emp_join1 CLOB);
+
+
+insert into datatype_dis values(102,'RAMA is a Good Boy','PAZHANI is a Bad Boy');
+
+select * from datatype_dis where EMP_JOIN LIKE '%RAVI is a Good Boy%'
+
+
+
+BLOB Datatype:  --> BINARY Large Object --> 4GB CAPACITY. (its Storing data in oracle)
+--------------
+
+BFILE Datatype:  --> BINARY Large Object --> 4GB CAPACITY. (its storing outside of oracle (or) its inside of computer)
+--------------
+
+
+

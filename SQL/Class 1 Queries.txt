@@ -1,0 +1,115 @@
+---Table Creation----
+Create table emp_details(Emp_id NUMBER,
+                         Emp_name VARCHAR2(100),
+                         EMP_SALARY NUMBER,
+                         EMP_ADDRESS VARCHAR2(1000),
+                         EMP_CONTACT VARCHAR2(100),
+                         EMP_MAIL_ID VARCHAR2(100)
+                         );
+                         
+Create table emp_details_Copy(Emp_id NUMBER,
+                         Emp_name VARCHAR2(100),
+                         EMP_SALARY NUMBER,
+                         EMP_ADDRESS VARCHAR2(1000),
+                         EMP_CONTACT VARCHAR2(100),
+                         EMP_MAIL_ID VARCHAR2(100)
+                         );
+
+create table emp_details_10 as select * from emp_details;
+
+---Diffent method of alter----
+ALTER TABLE emp_details ADD (EMP_DEPT VARCHAR2(100));
+ALTER TABLE emp_details MODIFY EMP_DEPT NUMBER;
+ALTER TABLE emp_details RENAME COLUMN EMP_DEPT TO EMP_DEPARTMENT;
+ALTER TABLE emp_details DROP COLUMN EMP_DEPARTMENT;
+
+----Dropping a table------
+DROP TABLE emp_details;
+
+----truncating a table------
+TRUNCATE TABLE emp_details;
+
+------renaming a table------
+rename emp_details to EMPLOYEE_DETAILS;
+
+
+---DIFFERNT WAY OF SELECT--                  
+SELECT * FROM EMPLOYEE_DETAILS;
+
+SELECT Emp_id,Emp_name,EMP_SALARY,EMP_ADDRESS,EMP_CONTACT,EMP_MAIL_ID FROM EMPLOYEE_DETAILS;
+
+select 'RAJAVEL' FROM EMPLOYEE_DETAILS;
+
+SELECT EMPLOYEE_DETAILS.Emp_id FROM EMPLOYEE_DETAILS;
+
+SELECT A.* FROM EMPLOYEE_DETAILS A;
+
+SELECT EMP_SALARY, A.* FROM EMPLOYEE_DETAILS A;
+
+select * except(EMP_ADDRESS) from emp_details;
+
+SELECT Emp_id, emp_id+1000 emp_id_test, Emp_name,EMP_SALARY,EMP_ADDRESS,EMP_CONTACT,EMP_MAIL_ID 
+FROM emp_details;
+
+----------INSERT DIFFERENT WAY----
+insert into emp_details(Emp_id ,Emp_name ,EMP_SALARY ,EMP_ADDRESS ,EMP_CONTACT , EMP_MAIL_ID) 
+values                 (101    ,'RAJA'   ,1000       ,'101 STREET',90879800    ,'rajavel@gmail.com');
+
+insert into emp_details(Emp_name ,EMP_SALARY ,EMP_ADDRESS ,EMP_CONTACT , EMP_MAIL_ID        , Emp_id) 
+values                 ('RAJA'   ,1000       ,'101 STREET',90879800    ,'rajavel@gmail.com' ,102);
+
+insert into emp_details values(105,'RAJA',1000,'101 ANNA STREET',90879800,'rajavel@gmail.com');
+
+insert ALL into emp_details(Emp_id ,Emp_name ,EMP_SALARY ,EMP_ADDRESS ,EMP_CONTACT , EMP_MAIL_ID ) values(106,'RAJA',1000,'101 ANNA STREET',90879800,'rajavel@gmail.com')
+INTO emp_details(Emp_id ,Emp_name ,EMP_SALARY ,EMP_ADDRESS ,EMP_CONTACT , EMP_MAIL_ID ) values(107,'RAJA',1000,'101 ANNA STREET',90879800,'rajavel@gmail.com')
+SELECT * FROM DUAL;
+
+insert into emp_details_Copy (select * from emp_details);  
+
+-----DUAL------
+---COLUMN --> DUMMY
+---VAULE  --> X
+--FOR CALCULATION PERPOSE--
+
+NULL ------> WORLD EMPTY SPACE
+
+NULL+1 ----> NULL
+NULL*2 ----> NULL
+NULL-399 ---> NULL
+NULL/9878 ---> NULL
+
+SELECT NULL/5454 FROM DUAL;
+
+
+
+----UPDATE WITH MULTIPLE ROW
+UPDATE emp_details SET EMP_SALARY = 2000;
+----UPDATE WITH SINGLE ROW
+UPDATE emp_details SET EMP_SALARY = EMP_SALARY+1000 WHERE EMP_ID = 102;
+
+----DELETE WITH CONDITION & WITHOUT CONDITION--
+DELETE emp_details;
+DELETE emp_details WHERE EMP_ID = 106;  DELETE FROM emp_details WHERE EMP_ID = 107;
+----------------------------
+
+
+1. 1000 Table need to load into another thousad table with dynamic
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+KDFKLDSJFLKJDSF
